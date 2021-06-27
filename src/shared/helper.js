@@ -1,6 +1,6 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
- 
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmil.com)
+
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -36,5 +36,11 @@ export const getDate = (day) => {
     return date;
   };
   let date = new Date();
-  return date.addDays(day).toISOString().split("T")[0];
+  return date
+    .addDays(day)
+    .toLocaleString()
+    .split(",")[0]
+    .split("/")
+    .reverse()
+    .join("-");
 };
