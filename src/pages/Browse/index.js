@@ -19,6 +19,12 @@
 import React, { useState, useEffect } from "react";
 import InputContainer from "../../components/Widgets/Input";
 import { getBrowseData } from "../../services/browse";
+import { getAllFolders } from "../../services/folders";
+import {
+  buildHierarchy,
+  generateHtml,
+} from "../../shared/dataProcessingHelper";
+import "./index.css";
 
 const Browse = () => {
   const initialState = {
@@ -40,105 +46,123 @@ const Browse = () => {
   const handleChange = (e) => {
     setBrowseData({ ...browseData, [e.target.name]: e.target.value });
   };
+  const [folderTree, setFolderTree] = useState(null);
+  useEffect(() => {
+    getAllFolders()
+      .then((res) => {
+        setFolderTree(generateHtml(buildHierarchy(res)));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
   return (
     <div className="main-container my-3">
-      <table className="table table-striped text-primary-color font-size-medium table-responsive-sm table-bordered">
-        <thead>
-          <tr>
-            <th colSpan="6" className="font-size-main-heading text-center">
-              Uploads in Software Repository
-            </th>
-          </tr>
-          <tr>
-            <th>
-              <input
-                type="search"
-                className="form-control"
-                placeholder="Search"
-              />
-            </th>
-            <th>
-              <InputContainer
-                name="status"
-                type="select"
-                onChange={(e) => handleChange(e)}
-                options={statusOptions}
-              />
-            </th>
-            <th></th>
-            <th></th>
-            <th>
-              <InputContainer
-                name="status"
-                type="select"
-                onChange={(e) => handleChange(e)}
-                options={assignOptions}
-              />
-            </th>
-            <th></th>
-          </tr>
-          <tr className="font-bold text-center font-size-sub-heading">
-            <th>Upload Name and Description</th>
-            <th>Status</th>
-            <th>Comment</th>
-            <th>Main Licenses</th>
-            <th>Assigned to</th>
-            <th>Upload Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          {browseDataList?.map((data) => (
-            <tr key={data.id} className="text-center">
-              <td>
-                <div className="font-demi">{data?.uploadname}</div>
-                <div className="font-size-small">{data?.description}</div>
-              </td>
-              <td>
-                <InputContainer
-                  name="status"
-                  type="select"
-                  onChange={(e) => handleChange(e)}
-                  options={statusOptions}
-                />
-              </td>
-              <td>-</td>
-              <td>-</td>
-              <td>
-                <InputContainer
-                  name="status"
-                  type="select"
-                  onChange={(e) => handleChange(e)}
-                  options={assignOptions}
-                />
-              </td>
-              <td>{data?.uploaddate.split(".")[0]}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <nav aria-label="Page navigation">
-        <ul className="pagination justify-content-center">
-          <li className="page-item disabled">
-            <a className="page-link" href="#" tabIndex="-1">
-              Previous
-            </a>
-          </li>
-          <li className="page-item">
-            <button
-              className="page-link"
-              onClick={(e) => handleChange(e)}
-              name="page"
-            >
-              1
-            </button>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href="#">
-              Next
-            </a>
-          </li>
-        </ul>
-      </nav>
+      <div className="row">
+        <div className="col-md-3 col-lg-2 m-0 p-0">
+          <h2 className="font-size-sub-heading">Folder Navagation</h2>
+          {folderTree}
+        </div>
+        <div className="col-md-9 col-lg-10">
+          <table className="table table-striped text-primary-color font-size-medium table-responsive-sm table-bordered">
+            <thead>
+              <tr>
+                <th colSpan="6" className="font-size-main-heading text-center">
+                  Uploads in Software Repository
+                </th>
+              </tr>
+              <tr>
+                <th>
+                  <input
+                    type="search"
+                    className="form-control"
+                    placeholder="Search"
+                  />
+                </th>
+                <th>
+                  <InputContainer
+                    name="status"
+                    type="select"
+                    onChange={(e) => handleChange(e)}
+                    options={statusOptions}
+                  />
+                </th>
+                <th></th>
+                <th></th>
+                <th>
+                  <InputContainer
+                    name="status"
+                    type="select"
+                    onChange={(e) => handleChange(e)}
+                    options={assignOptions}
+                  />
+                </th>
+                <th></th>
+              </tr>
+              <tr className="font-bold text-center font-size-sub-heading">
+                <th>Upload Name and Description</th>
+                <th>Status</th>
+                <th>Comment</th>
+                <th>Main Licenses</th>
+                <th>Assigned to</th>
+                <th>Upload Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {browseDataList?.map((data) => (
+                <tr key={data.id} className="text-center">
+                  <td>
+                    <div className="font-demi">{data?.uploadname}</div>
+                    <div className="font-size-small">{data?.description}</div>
+                  </td>
+                  <td>
+                    <InputContainer
+                      name="status"
+                      type="select"
+                      onChange={(e) => handleChange(e)}
+                      options={statusOptions}
+                    />
+                  </td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>
+                    <InputContainer
+                      name="status"
+                      type="select"
+                      onChange={(e) => handleChange(e)}
+                      options={assignOptions}
+                    />
+                  </td>
+                  <td>{data?.uploaddate.split(".")[0]}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <nav aria-label="Page navigation">
+            <ul className="pagination justify-content-center">
+              <li className="page-item disabled">
+                <a className="page-link" href="#" tabIndex="-1">
+                  Previous
+                </a>
+              </li>
+              <li className="page-item">
+                <button
+                  className="page-link"
+                  onClick={(e) => handleChange(e)}
+                  name="page"
+                >
+                  1
+                </button>
+              </li>
+              <li className="page-item">
+                <a className="page-link" href="#">
+                  Next
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
     </div>
   );
 };

@@ -1,0 +1,49 @@
+/*
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
+ SPDX-License-Identifier: GPL-2.0
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License
+ version 2 as published by the Free Software Foundation.
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License along
+ with this program; if not, write to the Free Software Foundation, Inc.,
+ 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*/
+
+.tree-view-list {
+  display: none;
+}
+
+.tree-view-list + label > li, .tree-view-list + label > ul {
+  display: block;
+}
+
+.tree-view-list:checked + label > li, .tree-view-list:checked + label > ul{
+  display: none;
+}
+
+.tree-view-list:checked + label li{
+  cursor: pointer;
+  display: block;
+}
+
+.tree-view-list + label li::before{
+  content: "\25BC";
+  color: black;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.tree-view-list:checked + label li::before{
+  transform: rotate(-90deg);
+}
+
+.tree-view-ul {
+  list-style: none;
+  padding: 0 0 0 15px;
+}
