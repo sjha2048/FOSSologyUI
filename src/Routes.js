@@ -59,6 +59,7 @@ import UploadMove from "./pages/Organize/Uploads/Move";
 
 // Default Page
 import ErrorPage from "./pages/ErrorPage";
+import UnlinkFolder from "./pages/Organize/Folder/Unlink";
 
 // Routes imports
 import { routes } from "./constants/routes";
@@ -171,8 +172,11 @@ const Routes = () => {
           path={routes.organize.uploads.move}
           component={UploadMove}
         />
-
-        {/* Default Page */}
+        <PrivateLayout
+          exact
+          path={routes.organize.folders.unlinkContent}
+          component={UnlinkFolder}
+        />
         <Route path="*">
           <PublicLayout component={ErrorPage} />
         </Route>
