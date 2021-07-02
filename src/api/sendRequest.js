@@ -26,6 +26,7 @@ const sendRequest = ({
   queryParams,
   isMultipart = false,
   noHeaders = false,
+  retries = 0,
 }) => {
   let mergedHeaders;
   if (isMultipart) {
@@ -33,6 +34,7 @@ const sendRequest = ({
   } else {
     mergedHeaders = new Headers({
       "content-type": "application/json",
+      accept: "application/json",
       ...headers,
     });
   }
@@ -52,12 +54,18 @@ const sendRequest = ({
   }
   return fetch(url, options).then((res) => {
     if (res.ok) {
-      for (var pair of res.headers.entries()) {
-        if (pair[0] === "x-total-pages") {
-          console.log(pair[1]);
-        }
-      }
       return res.json();
+    }
+    if (retries > 0) {
+      setTimeout(() => {
+        retries--;
+        sendRequest({
+          url,
+          method,
+          headers,
+          retries,
+        });
+      }, 50000);
     } else {
       return res.json().then(function (json) {
         return Promise.reject({

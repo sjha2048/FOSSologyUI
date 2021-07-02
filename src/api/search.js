@@ -37,7 +37,7 @@ export const searchFiles = async ({
   return sendRequest({
     url,
     method: "GET",
-    credentials: "include",
+    credentials: false,
     headers: {
       Authorization: token,
       groupName,

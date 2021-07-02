@@ -39,6 +39,9 @@ import DeleteFolder from "./pages/Organize/Folder/Delete";
 import CreateFolder from "./pages/Organize/Folder/Create";
 import EditFolder from "./pages/Organize/Folder/Edit";
 import MoveFolder from "./pages/Organize/Folder/Move";
+import UploadFromServer from "./pages/Upload/Server";
+import UploadFromVcs from "./pages/Upload/Vcs";
+import UploadFromUrl from "./pages/Upload/Url";
 
 // Routes imports
 import { routes } from "./constants/routes";
@@ -93,6 +96,21 @@ const Routes = () => {
           exact
           path={routes.organize.folders.move}
           component={MoveFolder}
+        />
+        <PrivateLayout
+          exact
+          path={routes.upload.server}
+          component={UploadFromServer}
+        />
+        <PrivateLayout
+          exact
+          path={routes.upload.url}
+          component={UploadFromUrl}
+        />
+        <PrivateLayout
+          exact
+          path={routes.upload.vcs}
+          component={UploadFromVcs}
         />
         <Route path="*">
           <PublicLayout component={ErrorPage} />

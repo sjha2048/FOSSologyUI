@@ -16,7 +16,12 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import { createUpload, scheduleAnalysis, getUploadById } from "../api/upload";
+import {
+  createUpload,
+  scheduleAnalysis,
+  getUploadById,
+  createUploadVcs,
+} from "../api/upload";
 
 export function createUploadFile({
   folderId,
@@ -36,14 +41,23 @@ export function createUploadFile({
   });
 }
 
-export function scheduleJobs(folderId, uploadId, scanData) {
-  return scheduleAnalysis(folderId, uploadId, scanData).then((res) => {
+export function createUploadVCS(header, body) {
+  return createUploadVcs(header, body).then((res) => {
+    console.log(res);
     return res;
   });
 }
 
-export function getId(uploadId) {
-  return getUploadById(uploadId).then((res) => {
+export function scheduleJobs(folderId, uploadId, scanData) {
+  return scheduleAnalysis(folderId, uploadId, scanData).then((res) => {
+    console.log(res);
+    return res;
+  });
+}
+
+export function getId(uploadId, retries) {
+  return getUploadById(uploadId, retries).then((res) => {
+    console.log(res);
     return res;
   });
 }
